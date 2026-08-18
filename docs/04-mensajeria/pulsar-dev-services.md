@@ -1,0 +1,69 @@
+# Dev Services for Pulsar
+
+> **Guia oficial:** <https://quarkus.io/guides/pulsar-dev-services>  
+> **Fuente:** `docs/src/main/asciidoc/pulsar-dev-services.adoc` en [quarkusio/quarkus@3.38.2](https://github.com/quarkusio/quarkus/blob/3.38.2/docs/src/main/asciidoc/pulsar-dev-services.adoc)  
+> **Version documentada:** Quarkus 3.38.2 · **Sincronizado:** 2026-08-17 · **Licencia:** Apache-2.0
+
+With Quarkus Messaging Pulsar extension (`quarkus-messaging-pulsar`)
+Dev Services for Pulsar automatically starts a Pulsar broker in dev mode and when running tests.
+So, you don’t have to start a broker manually.
+The application is configured automatically.
+
+## Enabling / Disabling Dev Services for Pulsar
+
+Dev Services for Pulsar is automatically enabled unless:
+
+* `quarkus.pulsar.devservices.enabled` is set to `false`
+* the `pulsar.client.serviceUrl` is configured
+* all the Reactive Messaging Pulsar channels have the `serviceUrl` attribute set
+
+Dev Services for Pulsar relies on Docker to start the broker.
+If your environment does not support Docker, you will need to start the broker manually, or connect to an already running broker.
+You can configure the broker address using `pulsar.client.`.
+
+## Shared broker
+
+Most of the time you need to share the broker between applications.
+Dev Services for Pulsar implements a _service discovery_ mechanism for your multiple Quarkus applications running in _dev_ mode to share a single broker.
+
+**📌 NOTE**\
+Dev Services for Pulsar starts the container with the `quarkus-dev-service-pulsar` label which is used to identify the container.
+
+If you need multiple (shared) brokers, you can configure the `quarkus.pulsar.devservices.service-name` attribute and indicate the broker name.
+It looks for a container with the same value, or starts a new one if none can be found.
+The default service name is `pulsar`.
+
+Sharing is enabled by default in dev mode, but disabled in test mode.
+You can disable the sharing with `quarkus.pulsar.devservices.shared=false`.
+
+## Setting the port
+
+By default, Dev Services for Pulsar picks a random port and configures the application.
+You can set the port by configuring the `quarkus.pulsar.devservices.port` property.
+
+Note that the Pulsar advertised address is automatically configured with the chosen port.
+
+## Configuring the image
+
+Dev Services for Pulsar supports the [official Apache Pulsar image](https://hub.docker.com/r/apachepulsar/pulsar).
+
+A custom image name can be configured as such:
+```properties
+quarkus.pulsar.devservices.image-name=datastax/lunastreaming-all:2.10_4.7
+```
+
+## Configuring the Pulsar broker
+
+You can configure the Dev Services for Pulsar with custom broker configuration.
+
+The following example enables transaction support:
+
+```properties
+quarkus.pulsar.devservices.broker-config.transaction-coordinator-enabled=true
+quarkus.pulsar.devservices.broker-config.system-topic-enabled=true
+```
+
+## Configuration reference
+
+**📌 NOTE**\
+La tabla de configuracion generada `quarkus-messaging-pulsar_quarkus.pulsar.devservices` se produce al construir la documentacion y no existe en el codigo fuente. Consulta la referencia de configuracion en https://quarkus.io/guides/all-config

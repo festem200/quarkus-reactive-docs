@@ -1,0 +1,8 @@
+{
+  "name": "quarkus-reactive-docs-tools",
+  "private": true,
+  "description": "Herramientas de conversion AsciiDoc -> Markdown",
+  "dependencies": {
+    "downdoc": "1.1.0-stable"
+  }
+}

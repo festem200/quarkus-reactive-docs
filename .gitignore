@@ -1,0 +1,8 @@
+# Clones temporales de las fuentes upstream y artefactos de conversion
+.build/
+
+# Dependencias de la herramienta de conversion
+scripts/node_modules/
+scripts/package-lock.json
+
+.DS_Store
